@@ -1,0 +1,36 @@
+from collections import deque
+
+def vacuum_cleaner(start, goal):
+    def get_successors(state):
+        room, pos = state
+        successors = []
+        for new_pos in range(len(room)):
+            if room[new_pos] == 1:
+                new_room = list(room)
+                new_room[new_pos] = 0
+                successors.append((tuple(new_room), new_pos))
+        return successors
+
+    queue = deque([(start, [])])
+    visited = set()
+    while queue:
+        state, path = queue.popleft()
+        if state in visited:
+            continue
+        visited.add(state)
+        path = path + [state]
+        if state[0] == goal:
+            return path
+        for successor in get_successors(state):
+            queue.append((successor, path))
+    return None
+
+start = ((1, 1, 0, 1), 0)  # initial state (room state, vacuum position)
+goal = (0, 0, 0, 0)        # goal state (all rooms clean)
+solution = vacuum_cleaner(start, goal)
+
+if solution:
+    for step in solution:
+        print(step)
+else:
+    print("No solution found")
