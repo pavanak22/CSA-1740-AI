@@ -1,0 +1,21 @@
+def solve(n):
+    def place(k, i):
+        for j in range(k):
+            if board[j] == i or abs(board[j] - i) == k - j: return False
+        return True
+
+    def put_queen(k):
+        if k == n:
+            for i in range(n):
+                print(" ".join('Q' if board[i] == j else '.' for j in range(n)))
+            return True
+        for i in range(n):
+            if place(k, i):
+                board[k] = i
+                if put_queen(k + 1): return True
+        return False
+
+    board = [-1] * n
+    put_queen(0)
+
+solve(8)
