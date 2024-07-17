@@ -1,0 +1,45 @@
+from collections import deque
+
+def water_jug_solver(capacity, target):
+    def is_valid(state):
+        return state not in visited
+
+    def get_next_states(state):
+        a, b = state
+        return {
+            (capacity[0], b),          
+            (a, capacity[1]),         
+            (0, b),                    
+            (a, 0),                   
+            (a - min(a, capacity[1] - b), b + min(a, capacity[1] - b)),  
+            (a + min(b, capacity[0] - a), b - min(b, capacity[0] - a))  
+        }
+
+    start = (0, 0)
+    queue = deque([(start, [])])
+    visited = set()
+
+    while queue:
+        (a, b), path = queue.popleft()
+        if (a, b) in visited:
+            continue
+        visited.add((a, b))
+        path = path + [(a, b)]
+
+        if a == target or b == target:
+            return path
+
+        for next_state in get_next_states((a, b)):
+            if is_valid(next_state):
+                queue.append((next_state, path))
+
+    return None
+
+capacity = (4, 3)
+target = 2
+solution = water_jug_solver(capacity, target)
+if solution:
+    for state in solution:
+        print(state)
+else:
+    print("No solution found")
