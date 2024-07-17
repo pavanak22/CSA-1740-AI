@@ -1,0 +1,32 @@
+from collections import deque
+
+def valid(m1, c1, m2, c2):
+    return (0 <= m1 <= 3 and 0 <= c1 <= 3 and 0 <= m2 <= 3 and 0 <= c2 <= 3 and 
+            (m1 == 0 or m1 >= c1) and (m2 == 0 or m2 >= c2))
+
+def successors(m1, c1, b, m2, c2):
+    moves = [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]
+    if b:
+        return [(m1 - m, c1 - c, 0, m2 + m, c2 + c) for m, c in moves if valid(m1 - m, c1 - c, m2 + m, c2 + c)]
+    return [(m1 + m, c1 + c, 1, m2 - m, c2 - c) for m, c in moves if valid(m1 + m, c1 + c, m2 - m, c2 - c)]
+
+def missionaries_cannibals():
+    start, goal, queue, visited = (3, 3, 1, 0, 0), (0, 0, 0, 3, 3), deque([((3, 3, 1, 0, 0), [])]), set()
+    while queue:
+        state, path = queue.popleft()
+        if state in visited:
+            continue
+        visited.add(state)
+        path.append(state)
+        if state == goal:
+            return path
+        for succ in successors(*state):
+            queue.append((succ, path[:]))
+    return None
+
+solution = missionaries_cannibals()
+if solution:
+    for step in solution:
+        print(step)
+else:
+    print("No solution found")
