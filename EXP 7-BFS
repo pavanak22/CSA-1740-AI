@@ -1,0 +1,29 @@
+from collections import deque
+
+def bfs(start, goal, get_neighbors):
+    queue = deque([(start, [])])
+    visited = set()
+    while queue:
+        state, path = queue.popleft()
+        if state in visited:
+            continue
+        visited.add(state)
+        path.append(state)
+        if state == goal:
+            return path
+        for neighbor in get_neighbors(state):
+            queue.append((neighbor, path[:]))
+    return None
+
+def get_neighbors_example(state):
+    # Example neighbor function
+    return [state + 1, state - 1]
+
+start = 0
+goal = 5
+solution = bfs(start, goal, get_neighbors_example)
+
+if solution:
+    print("Path to goal:", solution)
+else:
+    print("No path found")
