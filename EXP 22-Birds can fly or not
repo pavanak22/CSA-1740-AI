@@ -1,0 +1,14 @@
+can_fly(eagle).
+can_fly(parrot).
+can_fly(sparrow).
+can_fly(owl).
+
+cannot_fly(penguin).
+cannot_fly(ostrich).
+cannot_fly(kiwi).
+cannot_fly(cassowary).
+can_fly_or_not(Bird, Status) :-
+    ( can_fly(Bird) -> Status = 'can fly';
+      cannot_fly(Bird) -> Status = 'cannot fly';
+      Status = 'unknown'
+    ).
