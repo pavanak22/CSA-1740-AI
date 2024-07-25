@@ -1,0 +1,26 @@
+person(john_doe, date(1990, 5, 23)).
+person(jane_smith, date(1985, 10, 11)).
+person(mary_jones, date(1992, 7, 30)).
+person(paul_brown, date(1988, 3, 15)).
+person(lisa_white, date(1995, 12, 5)).
+dob(Name, date(Year, Month, Day)) :-
+    person(Name, date(Year, Month, Day)).
+name(date(Year, Month, Day), Name) :-
+    person(Name, date(Year, Month, Day)).
+
+
+
+
+
+
+
+
+
+
+
+Output:
+?- name(date(1990,5,23),Name).
+Name = john_doe.
+
+?- dob(john_doe,DOB).
+DOB = date(1990, 5, 23) 
