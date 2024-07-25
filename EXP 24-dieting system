@@ -1,0 +1,7 @@
+diet_for(diabetes, 'Low sugar, high fiber diet').
+diet_for(hypertension, 'Low salt, balanced diet').
+diet_for(heart_disease, 'Low fat, high omega-3 diet').
+diet_for(celiac_disease, 'Gluten-free diet').
+diet_for(obesity, 'Calorie-controlled, balanced diet').
+suggest_diet(Disease, Diet) :-
+    diet_for(Disease, Diet).
