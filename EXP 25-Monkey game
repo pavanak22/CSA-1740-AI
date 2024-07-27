@@ -1,0 +1,13 @@
+initial_state(state(monkey, box, on_ground, bananas_hanging)).
+goal_state(state(monkey, box, on_box, bananas_obtained)).
+action(retrieve_box, state(monkey, box, on_ground, bananas_hanging), state(monkey, box, on_box, bananas_hanging)).
+action(climb_box, state(monkey, box, on_box, bananas_hanging), state(monkey, box, on_box, bananas_obtained)).
+is_goal(State) :-
+    goal_state(State).
+perform_action(Action, CurrentState, NextState) :-
+    action(Action, CurrentState, NextState).
+solve(State, []) :-
+    is_goal(State).
+solve(State, [Action|Actions]) :-
+    perform_action(Action, State, NextState),
+    solve(NextState, Actions).
