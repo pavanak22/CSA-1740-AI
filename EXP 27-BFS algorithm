@@ -1,0 +1,40 @@
+% Define the graph
+edge(a, b, 1).
+edge(a, c, 4).
+edge(b, d, 2).
+edge(c, d, 1).
+edge(d, e, 5).
+
+% Define the heuristic (example heuristic values)
+heuristic(a, 6).
+heuristic(b, 4).
+heuristic(c, 2).
+heuristic(d, 1).
+heuristic(e, 0).
+
+% Best First Search Algorithm
+best_first_search(Start, Goal, Path, Cost) :-
+    heuristic(Start, H),
+    bfs([[Start, 0, H]], Goal, [], Path, Cost).
+
+% Helper function for BFS
+bfs([[Node, Cost, _]|_], Node, _, [Node], Cost).
+bfs([[Node, Cost, _]|Rest], Goal, Visited, [Node|Path], TotalCost) :-
+    findall([NextNode, NewCost, H], (edge(Node, NextNode, StepCost), 
+                                     \+ member(NextNode, Visited),
+                                     NewCost is Cost + StepCost,
+                                     heuristic(NextNode, H)), Children),
+    append(Rest, Children, NewQueue),
+    sort_queue(NewQueue, SortedQueue),
+    bfs(SortedQueue, Goal, [Node|Visited], Path, TotalCost).
+
+% Function to sort the queue based on heuristic values
+sort_queue(Queue, SortedQueue) :-
+    predsort(compare_heuristic, Queue, SortedQueue).
+
+% Comparator for sorting based on heuristic values
+compare_heuristic(<, [_, _, H1], [_, _, H2]) :- H1 =< H2.
+compare_heuristic(>, [_, _, H1], [_, _, H2]) :- H1 > H2.
+
+% Example query:
+% ?- best_first_search(a, e, Path, Cost).
