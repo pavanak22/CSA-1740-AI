@@ -1,0 +1,30 @@
+% Facts
+fact(sunny).
+fact(windy).
+fact(raining).
+
+% Rules
+rule(beach) :- fact(sunny), fact(windy).
+rule(library) :- fact(raining).
+
+% Forward Chaining Inference
+infer :- rule(X), \+ fact(X), assertz(fact(X)), write('Inferred: '), write(X), nl, fail.
+infer.
+
+% Query to run the forward chaining
+run_forward_chaining :-
+    write('Starting forward chaining...'), nl,
+    infer,
+    write('Forward chaining completed.'), nl,
+    write('Inferred facts:'), nl,
+    list_facts.
+
+% Helper predicate to list all facts
+list_facts :-
+    fact(X),
+    write(X), nl,
+    fail.
+list_facts.
+
+% Example queries:
+% ?- run_forward_chaining.
