@@ -1,0 +1,26 @@
+% Facts
+fact(sunny).
+fact(windy).
+fact(raining).
+
+% Rules
+rule(beach) :- fact(sunny), fact(windy).
+rule(library) :- fact(raining).
+
+% Backward Chaining
+prove(true) :- !.
+prove((A, B)) :- !, prove(A), prove(B).
+prove(A) :- fact(A).
+prove(A) :- rule(A).
+
+% Query to run backward chaining
+run_backward_chaining(Goal) :-
+    ( prove(Goal) ->
+        write('Goal: '), write(Goal), write(' is true.'), nl
+    ;   write('Goal: '), write(Goal), write(' cannot be proven.'), nl
+    ).
+
+% Example queries:
+% ?- run_backward_chaining(beach).
+% ?- run_backward_chaining(library).
+% ?- run_backward_chaining(mountain).
