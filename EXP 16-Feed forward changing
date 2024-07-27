@@ -1,0 +1,56 @@
+import numpy as np
+
+# Activation function: Sigmoid
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Derivative of the sigmoid function
+def sigmoid_derivative(x):
+    return x * (1 - x)
+
+# Feedforward Neural Network class
+class FeedForwardNN:
+    def __init__(self, input_size, hidden_size, output_size):
+        # Initialize weights
+        self.weights_input_hidden = np.random.rand(input_size, hidden_size)
+        self.weights_hidden_output = np.random.rand(hidden_size, output_size)
+
+    def forward(self, X):
+        # Forward pass
+        self.hidden = sigmoid(np.dot(X, self.weights_input_hidden))
+        self.output = sigmoid(np.dot(self.hidden, self.weights_hidden_output))
+        return self.output
+
+    def train(self, X, y, epochs, learning_rate):
+        for _ in range(epochs):
+            # Forward pass
+            output = self.forward(X)
+            
+            # Calculate error
+            error = y - output
+            
+            # Backpropagation
+            d_output = error * sigmoid_derivative(output)
+            error_hidden_layer = d_output.dot(self.weights_hidden_output.T)
+            d_hidden_layer = error_hidden_layer * sigmoid_derivative(self.hidden)
+            
+            # Update weights
+            self.weights_hidden_output += self.hidden.T.dot(d_output) * learning_rate
+            self.weights_input_hidden += X.T.dot(d_hidden_layer) * learning_rate
+
+# Example usage
+if __name__ == "__main__":
+    # Input data (X) and target output (y)
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([[0], [1], [1], [0]])  # XOR problem
+
+    # Create the neural network
+    nn = FeedForwardNN(input_size=2, hidden_size=2, output_size=1)
+
+    # Train the neural network
+    nn.train(X, y, epochs=10000, learning_rate=0.1)
+
+    # Test the neural network
+    for x in X:
+        output = nn.forward(x)
+        print(f"Input: {x}, Predicted Output: {output}")
