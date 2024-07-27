@@ -1,0 +1,67 @@
+% Facts about planets
+planet(mercury).
+planet(venus).
+planet(earth).
+planet(mars).
+planet(jupiter).
+planet(saturn).
+planet(uranus).
+planet(neptune).
+
+% Facts about the properties of planets
+diameter(mercury, 4879).
+diameter(venus, 12104).
+diameter(earth, 12742).
+diameter(mars, 6779).
+diameter(jupiter, 139820).
+diameter(saturn, 116460).
+diameter(uranus, 50724).
+diameter(neptune, 49244).
+
+mass(mercury, 0.330).
+mass(venus, 4.87).
+mass(earth, 5.97).
+mass(mars, 0.642).
+mass(jupiter, 1898).
+mass(saturn, 568).
+mass(uranus, 86.8).
+mass(neptune, 102).
+
+distance_from_sun(mercury, 57.9).
+distance_from_sun(venus, 108.2).
+distance_from_sun(earth, 149.6).
+distance_from_sun(mars, 227.9).
+distance_from_sun(jupiter, 778.5).
+distance_from_sun(saturn, 1434).
+distance_from_sun(uranus, 2871).
+distance_from_sun(neptune, 4495).
+
+% Example queries:
+% ?- planet(X).
+% ?- diameter(earth, D).
+% ?- mass(jupiter, M).
+% ?- distance_from_sun(mars, D).
+% ?- planet_with_property(earth, diameter, D).
+% ?- planet_with_property(jupiter, mass, M).
+
+% Rule to get a planet's property
+planet_with_property(Planet, Property, Value) :-
+    ( Property = diameter -> diameter(Planet, Value)
+    ; Property = mass -> mass(Planet, Value)
+    ; Property = distance_from_sun -> distance_from_sun(Planet, Value)
+    ).
+
+% Additional helper predicates
+list_planets :-
+    planet(X),
+    write(X), nl,
+    fail.
+list_planets.
+
+list_planet_properties(Planet) :-
+    diameter(Planet, D),
+    write('Diameter: '), write(D), nl,
+    mass(Planet, M),
+    write('Mass: '), write(M), nl,
+    distance_from_sun(Planet, Dist),
+    write('Distance from Sun: '), write(Dist), nl.
